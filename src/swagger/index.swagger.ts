@@ -12,7 +12,7 @@ const swaggerOptions: SwaggerOptions = {
       version: "1.0.0",
     },
     servers: [
-      { url: `http://localhost:${port}`, description: "development server" },
+      { url: `https://secure-journey-54754.herokuapp.com`, description: "development server" },
     ],
   },
   securityDefinitions: {
