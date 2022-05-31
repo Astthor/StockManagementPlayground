@@ -55,7 +55,13 @@ const prepareSignupPlayer = (signupDto: SignupDto) => {
 };
 
 export const signupPlayer = async (signupDto: SignupDto) => {
-  return authentication.signupPlayer(prepareSignupPlayer(signupDto));
+	try {
+		const player = await authentication.signupPlayer(prepareSignupPlayer(signupDto));
+		return player;
+	} catch (error) {
+		console.log("Error in signing up player MySQL: ", error);
+		return null;
+	}
 };
 
 export const prepareJwt = (bearerToken: string) =>
