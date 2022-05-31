@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authPlayersWallet } from "../middlewares/authorization/auth.middleware";
-import {placeOrderForWallet} from "../sevices/order.service";
+import { placeOrderForWallet } from "../sevices/order.service";
 
 export const orderRoutes = Router();
 
@@ -37,17 +37,23 @@ export const orderRoutes = Router();
  *
  */
 orderRoutes.post("/trade/:walletId", authPlayersWallet, (req, res) => {
-  const { ticker,amount, orderType } = req.body;
+  const { ticker, amount, orderType } = req.body;
   const walletId = req.params.walletId;
-  placeOrderForWallet({orderType, walletId: walletId, ticker: ticker.toUpperCase(), amount})
-    .then(response => {
-      if(response){
-        res.status(200).send(response)
+  placeOrderForWallet({
+    orderType,
+    walletId: walletId,
+    ticker: ticker.toUpperCase(),
+    amount,
+  })
+    .then((response) => {
+      if (response) {
+        res.status(200).send(response);
       } else {
-        res.status(400).send({error: 400, message: "Couldn't place order"});
+        res.status(400).send({ error: 400, message: "Couldn't place order" });
       }
-    }).catch(error => {
-      console.log("Error in placing order: ", error);
-      res.status(400).send({message: error.message}); // Send internal errors?
     })
+    .catch((error) => {
+      console.log("Error in placing order: ", error);
+      res.status(400).send({ message: error.message }); // Send internal errors?
+    });
 });

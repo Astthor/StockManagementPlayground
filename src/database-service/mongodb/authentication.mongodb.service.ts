@@ -9,6 +9,8 @@ export const authenticationMongodbService: InterfaceAuthenticationDatabaseServic
       return authenticationMongodbRepository.loginPlayer(email);
     },
     signupPlayer(signupDto: SignupDto): Promise<PlayerDto | null> {
-      return authenticationMongodbRepository.signupPlayer(signupDto);
+      return authenticationMongodbRepository.signupPlayer({
+        ...signupDto,
+      });
     },
   };

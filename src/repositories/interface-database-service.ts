@@ -8,4 +8,5 @@ export interface InterfaceDatabaseService {
   MySQL: DatabaseService;
   MongoDB: DatabaseService;
   Neo4j: DatabaseService;
+  DefaultDB: DatabaseService;
 }

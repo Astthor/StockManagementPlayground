@@ -10,45 +10,45 @@ datasource db {
 
 
 model player {
-  playerId Int      @id @default(autoincrement()) @map("player_id")
-  name     String   @db.VarChar(100)
-  email    String   @unique @db.VarChar(45)
-  phone    String   @unique @db.VarChar(45)
-  password String   @db.Char(60)
-	wallets  wallet[]
+    playerId Bytes    @id @db.Binary(16) @map("player_id")
+    name     String   @db.VarChar(100)
+    email    String   @unique @db.VarChar(45)
+    phone    String   @unique @db.VarChar(45)
+    password String   @db.Char(60)
+    wallets  wallet[]
 }
 
 model wallet {
-  walletId			Int              @id @default(autoincrement()) @map("wallet_id")
-  player				player					 @relation(fields: [fkPlayerId], references: [playerId])
-  fkPlayerId    Int              @map("fk_player_id")
-	nickname      String           @db.VarChar(45)
-  balance       Float
-  created       DateTime         @db.DateTime(0)
-	orders				order[]
-	stocks				WalletHasStock[]
-	transfersFrom transfer[]			@relation("TransferHistoryFrom")
-	transfersTo		transfer[]			@relation("TransferHistoryTo")
+    walletId	  Bytes             @id @db.Binary(16) @map("wallet_id")
+    player        player		    @relation(fields: [fkPlayerId], references: [playerId])
+    fkPlayerId    Bytes             @db.Binary(16) @map("fk_player_id")
+    nickname      String            @db.VarChar(45)
+    balance       Float
+    created       DateTime          @db.DateTime(0)
+	orders		  order[]
+	stocks		  WalletHasStock[]
+	transfersFrom transfer[]		@relation("TransferHistoryFrom")
+	transfersTo	  transfer[]		@relation("TransferHistoryTo")
 }
 
 model order {
-  orderId       Int        @id @default(autoincrement()) @map("order_id")
-	wallet				wallet?		 @relation(fields: [fkWalletId], references: [walletId])
-  fkWalletId    Int?       @map("fk_wallet_id")
-  fkStockTicker String     @map("fk_stock_ticker") @db.VarChar(15)
-  type          order_type
-  date          DateTime   @default(now()) @db.Timestamp(0)
-  stockPrice    Float      @map("stock_price")
-  stockShares   Float      @map("stock_shares")
+      orderId       Bytes        @id @db.Binary(16) @map("order_id")
+      wallet		wallet?		 @relation(fields: [fkWalletId], references: [walletId])
+      fkWalletId    Bytes?       @db.Binary(16) @map("fk_wallet_id")
+      fkStockTicker String       @map("fk_stock_ticker") @db.VarChar(15)
+      type          order_type
+      date          DateTime     @default(now()) @db.Timestamp(0)
+      stockPrice    Float        @map("stock_price")
+      stockShares   Float        @map("stock_shares")
 }
 
 model WalletHasStock {
-  walletHasStockId Int    @id @default(autoincrement()) @map("wallet_has_stock_id")
-	wallet					 wallet @relation(fields: [fkWalletId], references: [walletId])
-  fkWalletId       Int    @map("fk_wallet_id")
-  fkStockTicker    String @map("fk_stock_ticker") @db.VarChar(15)
-  stockShares      Float  @map("stock_shares")
-  avgPrice         Float  @map("avg_price")
+    walletHasStockId Bytes      @id @db.Binary(16)  @map("wallet_has_stock_id")
+	wallet			 wallet     @relation(fields: [fkWalletId], references: [walletId])
+    fkWalletId       Bytes      @db.Binary(16) @map("fk_wallet_id")
+    fkStockTicker    String     @map("fk_stock_ticker") @db.VarChar(15)
+    stockShares      Float      @map("stock_shares")
+    avgPrice         Float      @map("avg_price")
 
 	@@map("wallet_has_stock")
 }
@@ -63,13 +63,13 @@ model stock {
 }
 
 model transfer {
-  transferId                           Int      @id @default(autoincrement()) @map("transfer_id")
-	walletFrom													 wallet 	@relation("TransferHistoryFrom", fields: [fkWalletFrom], references: [walletId])
-  fkWalletFrom                         Int      @map("fk_wallet_from")
-	walletTo														 wallet 	@relation("TransferHistoryTo", fields: [fkWalletTo], references: [walletId])
-  fkWalletTo                           Int      @map("fk_wallet_to")
-  date                                 DateTime @db.DateTime(0)
-  amount                               Float
+    transferId                           Bytes        @id @db.Binary(16) @map("transfer_id")
+	walletFrom						   wallet 	    @relation("TransferHistoryFrom", fields: [fkWalletFrom], references: [walletId])
+    fkWalletFrom                         Bytes        @db.Binary(16) @map("fk_wallet_from")
+	walletTo						   wallet 	    @relation("TransferHistoryTo", fields: [fkWalletTo], references: [walletId])
+    fkWalletTo                           Bytes        @db.Binary(16) @map("fk_wallet_to")
+    date                                 DateTime     @db.DateTime(0)
+    amount                               Float
 }
 
 enum order_type {

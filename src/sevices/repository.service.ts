@@ -21,8 +21,6 @@ export function switchSelectDatabaseService(
     case Databases.Neo4j:
       return SERVICES.Neo4j;
     default:
-      throw Error(
-        `No Database was implemented for what has been selected: type of repository object: ${databases}`
-      );
+      return SERVICES.DefaultDB;
   }
 }

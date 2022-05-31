@@ -23,6 +23,12 @@ import { InterfaceAuthenticationDatabaseService } from "../database-service/inte
 import { authenticationMongodbService } from "../database-service/mongodb/authentication.mongodb.service";
 import { authenticationMySqlService } from "../database-service/mysql/authentication.mysql.service";
 import { authenticationNeo4jService } from "../database-service/neo4j/authentication.neo4j.service";
+import { playerDefaultDbService } from "../database-service/default-db/player.default-db.service";
+import { walletDefaultDbService } from "../database-service/default-db/wallet.default-db.service";
+import { walletStockDefaultDbService } from "../database-service/default-db/wallet-stock.default-db.service";
+import { stockDefaultDbService } from "../database-service/default-db/stock.default-db.service";
+import { orderDefaultDbService } from "../database-service/default-db/order.default-db.service";
+import { authenticationDefaultDbService } from "../database-service/default-db/authentication.default-db.service";
 
 export interface DatabaseService {
   Player: InterfacePlayerDatabaseService;
@@ -57,5 +63,13 @@ export const SERVICES: InterfaceDatabaseService = {
     Stock: stockNeo4jService,
     Order: orderNeo4jService,
     authentication: authenticationNeo4jService,
+  },
+  DefaultDB: {
+    Player: playerDefaultDbService,
+    Wallet: walletDefaultDbService,
+    WalletStock: walletStockDefaultDbService,
+    Stock: stockDefaultDbService,
+    Order: orderDefaultDbService,
+    authentication: authenticationDefaultDbService,
   },
 };

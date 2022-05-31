@@ -1,6 +1,6 @@
 import { WalletDto } from "../models/dto/wallet.dto";
 import { switchSelectDatabaseService } from "./repository.service";
-import { currentDatabase, Databases } from "../global/database-control";
+import { currentDatabase } from "../global/database-control";
 
 const { Player } = switchSelectDatabaseService(currentDatabase);
 
@@ -20,5 +20,5 @@ export const playerHasWallet = (
   playerId: string,
   walletId: string
 ): Promise<WalletDto | null> => {
-  return Player.playerHasWallet(playerId, walletId);
+  return Player.playerHasWallet(playerId, walletId)
 };

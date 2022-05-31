@@ -14,8 +14,7 @@ export const neo4jConnection = async (sanitizedQuery: string, params?: any) => {
   try {
     return await session.run(sanitizedQuery, params);
   } catch (error) {
-    console.error(error);
-    throw Error("connection failed");
+    throw new Error((error as Error).message);
   } finally {
     await session.close();
   }

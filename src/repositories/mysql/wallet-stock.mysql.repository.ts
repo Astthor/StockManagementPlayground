@@ -7,10 +7,9 @@ import { InterfaceWalletStockRepository } from "../interface-wallet-stock.reposi
 
 export const WalletStockMysqlRepository: InterfaceWalletStockRepository = {
   async getWalletStocks(walletId) {
-    const walletIdNumber: number = +walletId;
     const queryResult = await prismaMySql.walletHasStock.findMany({
       where: {
-        fkWalletId: walletIdNumber,
+        fkWalletId: Buffer.from(walletId),
       },
       select: walletStockValueSelect,
     });
@@ -23,21 +22,27 @@ export const WalletStockMysqlRepository: InterfaceWalletStockRepository = {
       return stockValue;
     });
   },
-  async getWalletStocksWithStockTicker (walletId: string, stockTicker: string): Promise<WalletStockValue | null> {
-    const walletIdNumber: number = +walletId;
+  async getWalletStocksWithStockTicker(
+    walletId: string,
+    stockTicker: string
+  ): Promise<WalletStockValue | null> {
     const queryResult = await prismaMySql.walletHasStock.findMany({
       where: {
-        fkWalletId: walletIdNumber,
+        fkWalletId: Buffer.from(walletId),
       },
       select: walletStockValueSelect,
     });
 
-    const walletStock = queryResult.find(e => e.fkStockTicker === stockTicker);
+    const walletStock = queryResult.find(
+      (e) => e.fkStockTicker === stockTicker
+    );
 
-    return walletStock ? {
-      stockTicker: walletStock.fkStockTicker,
-      stockShares: walletStock.stockShares,
-      avgPrice: walletStock.avgPrice,
-    } : null;
-  }
+    return walletStock
+      ? {
+          stockTicker: walletStock.fkStockTicker,
+          stockShares: walletStock.stockShares,
+          avgPrice: walletStock.avgPrice,
+        }
+      : null;
+  },
 };

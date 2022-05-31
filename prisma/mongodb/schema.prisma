@@ -11,7 +11,8 @@ datasource db {
 
 
 model player {
-  playerId String @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  playerId String @unique
   name String 
   email String @unique
   phone String @unique
@@ -20,9 +21,11 @@ model player {
 }
 
 model wallet {
-  walletId String @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  walletId String @unique
   player player @relation(fields: [fkPlayerId], references: [playerId])
-  fkPlayerId String @db.ObjectId
+  fkPlayerId String
   nickname String
   balance Float
   created DateTime

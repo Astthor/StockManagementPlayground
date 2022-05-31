@@ -20,12 +20,13 @@ export const authenticationNeo4jRepository: InterfaceAuthentication = {
   async signupPlayer(signupDto: SignupDto): Promise<PlayerDto | null> {
     return (
       await neo4jConnection(
-        `CREATE (player: Player {email: $email, password: $password, phone: $phone, name: $name}) RETURN player`,
+        `CREATE (player: Player {email: $email, password: $password, phone: $phone, name: $name, playerId: $playerId}) RETURN player`,
         {
           email: signupDto.email,
           password: signupDto.password,
           phone: signupDto.phone,
           name: signupDto.name,
+          playerId: signupDto.playerId,
         }
       )
     ).records[0].get(0).properties;

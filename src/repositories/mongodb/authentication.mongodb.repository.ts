@@ -6,7 +6,9 @@ import { InterfaceAuthentication } from "../interface-authentication.repository"
 export const authenticationMongodbRepository: InterfaceAuthentication = {
   async signupPlayer(signupDto: SignupDto): Promise<PlayerDto | null> {
     const player = await prismaMongodb.player
-      .create({ data: signupDto })
+      .create({
+        data: { ...signupDto, playerId: signupDto.playerId },
+      })
       .catch((reason) => {
         throw Error(reason);
       });

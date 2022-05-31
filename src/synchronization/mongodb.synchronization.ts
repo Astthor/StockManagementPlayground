@@ -16,11 +16,12 @@ import {
 } from "../../prisma/mysql/client";
 import { prismaMongodb } from "../database-connection/mongodb.database-connection";
 import { prismaMySql } from "../database-connection/mysql.database-connection";
+import { stringify } from "uuid";
 
 const walletIdMap = new Map();
 
 interface walletAndTransfers {
-  fkWalletId: number;
+  fkWalletId: string;
   transfersFrom: transferMysql[];
   transfersTo: transferMysql[];
 }
@@ -62,6 +63,7 @@ export const populateMongodbPlayersAndWallets = async () => {
   const playerAndWalletsCreated = playerData.map(async (playerObj) => {
     const createdPlayer = await prismaMongodb.player.create({
       data: {
+        playerId: stringify(playerObj.playerId),
         name: playerObj.name,
         email: playerObj.email,
         phone: playerObj.phone,
@@ -80,7 +82,7 @@ export const populateMongodbPlayersAndWallets = async () => {
       const walletStocks: walletHasStockMongodb[] =
         mapWalletHasStockMysqlToMongodb(walletObj.stocks);
       walletsMysqlTransfers.push({
-        fkWalletId: walletObj.walletId,
+        fkWalletId: stringify(walletObj.walletId),
         transfersFrom: walletObj.transfersFrom,
         transfersTo: walletObj.transfersTo,
       });
@@ -144,7 +146,8 @@ const mapWallet = (walletObj: walletMysql) => {
   const genId = new ObjectId().toHexString();
   walletIdMap.set(walletObj.walletId, genId);
   const wallet: walletMongodb = {
-    walletId: genId, // Either generate or create here.
+    id: genId, // Either generate or create here.
+    walletId: stringify(walletObj.walletId),
     fkPlayerId: walletObj.fkPlayerId.toString(),
     nickname: walletObj.nickname,
     balance: walletObj.balance,

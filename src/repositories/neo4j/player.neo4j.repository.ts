@@ -5,7 +5,7 @@ import { neo4jConnection } from "../../database-connection/neo4j.database-connec
 export const playerNeo4jRepository: InterfacePlayerRepository = {
   async getAllWalletsForPlayer(playerId: string): Promise<WalletDto[] | null> {
     const queryResult = await neo4jConnection(
-      `MATCH (player:Player)-[:HAS]->(wallet:Wallet) WHERE id(player)=$playerId RETURN wallet`,
+      `MATCH (player:Player {playerId: $playerId})-[:HAS]->(wallet:Wallet) RETURN wallet`,
       { playerId: playerId }
     );
     return queryResult.records.map((res) => res.get(0).properties);
@@ -15,8 +15,8 @@ export const playerNeo4jRepository: InterfacePlayerRepository = {
     walletId: string
   ): Promise<WalletDto | null> {
     const queryResult = await neo4jConnection(
-      `MATCH (player:Player)-[:HAS]->(wallet:Wallet) WHERE id(player)=$playerId AND id(wallet)=$walletId RETURN wallet`,
-      { playerId: playerId, walletId: +walletId }
+      `MATCH (player:Player {playerId: $playerId})-[:HAS]->(wallet:Wallet {walletId: $walletId}) RETURN wallet`,
+      { playerId: playerId, walletId: walletId }
     );
     return queryResult.records[0].get(0).properties;
   },

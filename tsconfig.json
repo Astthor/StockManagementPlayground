@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+
+
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
     /* Projects */
@@ -9,7 +11,7 @@
     // "disableSourceOfProjectReferenceRedirect": true,  /* Disable preferring source files instead of declaration files when referencing composite projects */
     // "disableSolutionSearching": true,                 /* Opt a project out of multi-project reference checking when editing. */
     // "disableReferencedProjectLoad": true,             /* Reduce the number of projects loaded automatically by TypeScript. */
-
+                               /*heroku deployment config*/
     /* Language and Environment */
     "target": "es2017",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     "lib": [
@@ -100,5 +102,6 @@
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
-  }
+  },
+  "include": ["src/**/*"]
 }

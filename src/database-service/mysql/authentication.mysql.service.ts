@@ -9,6 +9,8 @@ export const authenticationMySqlService: InterfaceAuthenticationDatabaseService 
       return authenticationMySqlRepository.loginPlayer(email);
     },
     signupPlayer(signupDto: SignupDto): Promise<PlayerDto | null> {
-      return authenticationMySqlRepository.signupPlayer(signupDto);
+      return authenticationMySqlRepository.signupPlayer({
+        ...signupDto,
+      });
     },
   };

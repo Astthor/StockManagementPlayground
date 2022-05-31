@@ -1,6 +1,5 @@
 import { Request, Response, Router } from "express";
-import { getWallet } from "../sevices/wallet.service";
-import { isNumberRegex } from "../utils/input-checks";
+import { createWallet, getWallet } from "../sevices/wallet.service";
 import { walletStockRoutes } from "./wallet-stocks/index.wallet-stock.route";
 import { authPlayersWallet } from "../middlewares/authorization/auth.middleware";
 
@@ -33,20 +32,49 @@ walletRoutes.use("/stock", walletStockRoutes);
  *              $ref: '#/components/schemas/WalletResponse'
  */
 walletRoutes.get(
-  "/:walletId", authPlayersWallet, 
+  "/:walletId",
+  authPlayersWallet,
   (req: Request, res: Response) => {
     const walletId: string = req.params.walletId;
+    console.log(req.params);
     getWallet(walletId)
       .then((data) => {
-        if(data){
-          res.json({ wallet: data });
+        if (data) {
+          res.send({ wallet: data });
         } else {
-          res.status(404).send({error: 404, message: "Wallet Not Found"});
+          res.status(404).send({ error: 404, message: "Wallet Not Found" });
         }
       })
       .catch((error: Error) => {
-        res.status(400).send({error: 400, message: "Can not get wallet"});
+        res.status(400).send({ error: 400, message: "Can not get wallet" });
         console.log("Error: ", error);
       });
   }
 );
+
+/**
+ * @swagger
+ * /wallet/create:
+ *  post:
+ *    security:
+ *      - bearerAuth: []
+ *    summary: create new wallet for player
+ *    tags: [wallet]
+ *    responses:
+ *      401:
+ *        description: The player failed to login
+ *      201:
+ *        description: new wallet has been generated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/WalletResponse'
+ */
+walletRoutes.post("/create", async (req, res) => {
+  createWallet(req.body.playerId)
+    .then((response) => res.send(response))
+    .catch((error) => {
+      console.error(error);
+      res.status(400);
+    });
+});
